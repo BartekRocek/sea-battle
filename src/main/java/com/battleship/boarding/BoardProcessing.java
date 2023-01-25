@@ -1,8 +1,14 @@
 package com.battleship.boarding;
 
 import com.battleship.Main;
+import com.battleship.players.Player;
+import com.battleship.utils.Coordinates;
+import com.battleship.utils.ShipProcessing;
 
+import java.util.Scanner;
 import java.util.stream.Stream;
+
+import static com.battleship.utils.ValidityChecking.isShipValid;
 
 public class BoardProcessing {
 
@@ -27,7 +33,8 @@ public class BoardProcessing {
         }
     }
 
-    public static void createBoard(int[] coordinates, char[][] board, char[][] baseBoard, ResultingBoard resultingBoard, ResultingBoard baseBoardOutcome) {
+    public static void createBoard(int[] coordinates, char[][] board, char[][] baseBoard,
+                                   ResultingBoard resultingBoard, ResultingBoard baseBoardOutcome) {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -45,7 +52,8 @@ public class BoardProcessing {
             }
         }
         resultingBoard.setBoardData(board);
-        copyBoard(board, baseBoard, baseBoardOutcome); // Copying the values of the "board" to a new array not references
+        copyBoard(board, baseBoard, baseBoardOutcome); // Copying the values of the "board" to a new array not
+        // references
     }
 
     public static void drawBoard(ResultingBoard resultingBoard) {
@@ -90,8 +98,8 @@ public class BoardProcessing {
                 } else if (coordinates[0] == i && coordinates[1] == j && resultingBoard.getBoardData()[i][j] == shot) {
                     foggedBoard[i][j] = shot;
                 }
-                 if (resultingBoard.getBoardData()[i][j] == Main.SHIP_COMPONENT ||
-                         resultingBoard.getBoardData()[i][j] == Main.FOG && resultingBoard.getBoardData()[i][j] != shot) {
+                if (resultingBoard.getBoardData()[i][j] == Main.SHIP_COMPONENT ||
+                        resultingBoard.getBoardData()[i][j] == Main.FOG && resultingBoard.getBoardData()[i][j] != shot) {
                     foggedBoard[i][j] = Main.FOG;
                 }
             }
@@ -101,13 +109,52 @@ public class BoardProcessing {
     }
 
     /*
-    *   The objective of this copyBoard method is to copy the array to a new array so no reference is used,
-    *   so that the values remain always as originals
-    */
+     *   The objective of this copyBoard method is to copy the array to a new array so no reference is used,
+     *   so that the values remain always as originals
+     */
     public static void copyBoard(char[][] board, char[][] baseBoard, ResultingBoard baseBoardOutcome) {
         for (int i = 0; i < 10; i++) {
             System.arraycopy(board[i], 0, baseBoard[i], 0, 10);
         }
         baseBoardOutcome.setBoardData(baseBoard);
+    }
+
+    public static void enterCoordinatesToPlaceAllShips(Scanner scanner, ResultingBoard resultingBoard,
+                                                       ResultingBoard baseBoardOutcome,
+                                                       char[][] board, char[][] baseBoard, int numberOfCells,
+                                                       int checkIndexForThreeCells, Player player) {
+        int[] coordinates;
+        new Player(player.getNumber());
+        BoardProcessing.drawEmptyBoard();
+        for (; numberOfCells >= 2; numberOfCells--) {
+
+            if (numberOfCells == 3 && ShipProcessing.getNumberOfPreviousShips(resultingBoard) == 9
+                    || ShipProcessing.getNumberOfPreviousShips(resultingBoard) == 12) {
+                System.out.println("Enter the coordinates of the " + ShipProcessing.getShipType(numberOfCells,
+                        resultingBoard)
+                        + " (" + numberOfCells + " cells):");
+                checkIndexForThreeCells++;
+            } else {
+                System.out.println("Enter the coordinates of the " + ShipProcessing.getShipType(numberOfCells,
+                        resultingBoard)
+                        + " (" + numberOfCells + " cells):");
+            }
+            coordinates = Coordinates.enterCoordinates(scanner);
+
+            while (!isShipValid(coordinates, numberOfCells, resultingBoard)) {
+                coordinates = Coordinates.enterCoordinates(scanner);
+            }
+
+            /* this is an index for 2 consecutive ships with three cells, so we need to set numberOfCells to 4 after
+            the first three-cell ship as the numberOfCells iterates backwards,
+            and we want to get the value of three again */
+            if (checkIndexForThreeCells == 1) numberOfCells = 4;
+
+            createBoard(coordinates, board, baseBoard, resultingBoard, baseBoardOutcome);
+
+            drawBoard(resultingBoard);
+
+            System.out.println("Press Enter and pass the move to another player");
+        }
     }
 }

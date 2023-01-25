@@ -4,10 +4,10 @@ import com.battleship.boarding.FoggedBoard;
 import com.battleship.boarding.ResultingBoard;
 import com.battleship.interfaces.SettingShipExtremes;
 
-import static com.battleship.Main.SHIP_COMPONENT;
 import static com.battleship.Main.FOG;
 import static com.battleship.Main.HIT;
 import static com.battleship.Main.MISSED;
+import static com.battleship.Main.SHIP_COMPONENT;
 
 
 public class ValidityChecking {
@@ -24,12 +24,14 @@ public class ValidityChecking {
 
         if (!(coordinates[2] - coordinates[0] == numberOfCells - 1
                 || coordinates[3] - coordinates[1] == numberOfCells - 1)) {
-            System.out.println("Error! Wrong length of the " + ShipProcessing.getShipType(numberOfCells, resultingBoard) + "! Try again:");
+            System.out.println("Error! Wrong length of the " + ShipProcessing.getShipType(numberOfCells,
+                    resultingBoard) + "! Try again:");
             return false;
         } else return true;
     }
 
-    protected static boolean isShipDistanceCorrect(int[] coordinates, ResultingBoard resultingBoard, int numberOfCells) {
+    protected static boolean isShipDistanceCorrect(int[] coordinates, ResultingBoard resultingBoard,
+                                                   int numberOfCells) {
         /*
          * A new object to create the surrounding area around the ship to check that there is a shipComponent
          * within set up previously
@@ -108,7 +110,9 @@ public class ValidityChecking {
         return coordinates[0] <= coordinates[2] && coordinates[1] <= coordinates[3];
     }
 
-    public static boolean isSingleShipSunk(int[] coordinates, ResultingBoard resultingBoard, ResultingBoard baseBoardOutcome) { //!THIS IS WHAT WE'RE WORKING ON AT THE MOMENT!
+    public static boolean isSingleShipSunk(int[] coordinates, ResultingBoard resultingBoard,
+                                           ResultingBoard baseBoardOutcome) { //!THIS IS WHAT WE'RE WORKING ON AT THE
+        // MOMENT!
 
         int[] shipProw = {0, 0};
         int[] shipStern = {0, 0};
@@ -142,9 +146,9 @@ public class ValidityChecking {
         };
 
         /*  o
-        *   o
-        *   O
-        */
+         *   o
+         *   O
+         */
         SettingShipExtremes verticalShipStern = () -> {
             for (int k = coordinates[0]; k <= 9; k++) {
                 if (baseBoardOutcome.getBoardData()[k][coordinates[1]] == FOG) {
@@ -177,7 +181,8 @@ public class ValidityChecking {
 
         if (isShipComponentPlacedAtExtremes(coordinates)) { //uppermost and leftmost extremes
             try {
-                if (baseBoardOutcome.getBoardData()[coordinates[0]][coordinates[1] + 1] == SHIP_COMPONENT) { // checking that ship is horizontal
+                if (baseBoardOutcome.getBoardData()[coordinates[0]][coordinates[1] + 1] == SHIP_COMPONENT) { //
+                    // checking that ship is horizontal
                     for (int i = 0; i <= horizontalShipStern.apply(); i++) {
                         if (baseBoardOutcome.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT
                                 && resultingBoard.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT) return false;
@@ -203,7 +208,8 @@ public class ValidityChecking {
             }
         } else {    //NOT uppermost and leftmost extremes
             try {
-                if (resultingBoard.getBoardData()[coordinates[0] - 1][coordinates[1]] == FOG        /* checking horizontal ships */
+                if (resultingBoard.getBoardData()[coordinates[0] - 1][coordinates[1]] == FOG        /* checking
+                horizontal ships */
                         && resultingBoard.getBoardData()[coordinates[0] + 1][coordinates[1]] == FOG) {
                     for (int i = coordinates[1]; i >= horizontalShipProw.apply(); i--) {
                         if (resultingBoard.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT
@@ -213,7 +219,7 @@ public class ValidityChecking {
                     }
                     for (int i = coordinates[1]; i <= horizontalShipStern.apply(); i++) {
                         if (resultingBoard.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT
-                            && baseBoardOutcome.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT) {
+                                && baseBoardOutcome.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT) {
                             return false;
                         }
                     }
@@ -221,7 +227,7 @@ public class ValidityChecking {
                 } else {    /* checking vertical ships*/
                     for (int i = coordinates[0]; i >= verticalShipProw.apply(); i--) {
                         if (resultingBoard.getBoardData()[i][coordinates[1]] == SHIP_COMPONENT
-                            && baseBoardOutcome.getBoardData()[i][coordinates[1]] == SHIP_COMPONENT) {
+                                && baseBoardOutcome.getBoardData()[i][coordinates[1]] == SHIP_COMPONENT) {
                             return false;
                         }
                     }
@@ -234,7 +240,8 @@ public class ValidityChecking {
                     }
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                if (resultingBoard.getBoardData()[coordinates[0] - 1][coordinates[1]] == FOG) {        /* checking horizontal ships */
+                if (resultingBoard.getBoardData()[coordinates[0] - 1][coordinates[1]] == FOG) {        /* checking
+                horizontal ships */
                     for (int i = coordinates[1]; i >= horizontalShipProw.apply(); i--) {
                         if (resultingBoard.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT
                                 && baseBoardOutcome.getBoardData()[coordinates[0]][i] == SHIP_COMPONENT) {
