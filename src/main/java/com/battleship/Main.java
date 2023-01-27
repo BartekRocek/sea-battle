@@ -26,10 +26,6 @@ public class Main {
         ResultingBoard resultingBoard = new ResultingBoard();
         ResultingBoard baseBoardOutcome = new ResultingBoard();
         FoggedBoard foggedBoardOutcome = new FoggedBoard();
-        Player playerOne = new Player(resultingBoard, foggedBoardOutcome);
-        playerOne.setNumber("1");
-        Player playerTwo = new Player(resultingBoard, foggedBoardOutcome);
-        playerTwo.setNumber("2");
 
         char[][] board = new char[10][10];
         char[][] foggedBoard = new char[10][10];
@@ -39,10 +35,19 @@ public class Main {
         var checkIndexForThreeCells = 0;
 
         //Player ONE enters coordinates
-        BoardProcessing.enterCoordinatesToPlaceAllShips(scanner, resultingBoard, baseBoardOutcome, board, baseBoard,
+        ResultingBoard resultingBoard1 = new ResultingBoard();
+        FoggedBoard foggedBoardOutcome1 = new FoggedBoard();
+        Player playerOne = new Player(resultingBoard1, foggedBoardOutcome1);
+        playerOne.setNumber("1");
+        BoardProcessing.enterCoordinatesToPlaceAllShips(scanner, baseBoardOutcome, board, baseBoard,
                 numberOfCells, checkIndexForThreeCells, playerOne);
+
         //Player TWO enters coordinates
-        BoardProcessing.enterCoordinatesToPlaceAllShips(scanner, resultingBoard, baseBoardOutcome, board, baseBoard,
+        ResultingBoard resultingBoard2 = new ResultingBoard();
+        FoggedBoard foggedBoardOutcome2 = new FoggedBoard();
+        Player playerTwo = new Player(resultingBoard2, foggedBoardOutcome2);
+        playerTwo.setNumber("2");
+        BoardProcessing.enterCoordinatesToPlaceAllShips(scanner, baseBoardOutcome, board, baseBoard,
                 numberOfCells, checkIndexForThreeCells, playerTwo);
 
         System.out.println("The game starts!");

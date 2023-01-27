@@ -3,6 +3,8 @@ package com.battleship.players;
 import com.battleship.boarding.FoggedBoard;
 import com.battleship.boarding.ResultingBoard;
 
+import java.util.function.Predicate;
+
 public class Player {
 
     ResultingBoard resultingBoard;
@@ -10,15 +12,20 @@ public class Player {
 
     private String number;
 
+    Predicate<String> isPlayerOne = x -> this.number.equals("1");
 
-    public Player(String number) {
-        this.number = number;
-        System.out.println("Player " + this.number + ", place your ships on the game field");
-    }
+//    public Player(String number) {
+//        this.number = number;
+//    }
 
     public Player(ResultingBoard resultingBoard, FoggedBoard foggedBoard) {
         this.resultingBoard = resultingBoard;
         this.foggedBoard = foggedBoard;
+    }
+
+    public void playerCommandToPlay() {
+         System.out.println(isPlayerOne.test("1") ? "Player " + this.number + ", place your ships on the game field)"
+                 : "Player " + this.number + ", place your ships to the game field");
     }
 
     public ResultingBoard getResultingBoard() {
