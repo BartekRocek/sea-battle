@@ -34,12 +34,12 @@ public class BoardProcessing {
     }
 
     public static void createBoard(int[] coordinates, char[][] board, char[][] baseBoard,
-                                   ResultingBoard resultingBoard, ResultingBoard baseBoardOutcome) {
+                                   ResultingBoard baseBoardOutcome, Player player) {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 //Placing the already existing ships
-                if (resultingBoard.getBoardData()[i][j] == Main.SHIP_COMPONENT) {
+                if (player.getResultingBoard().getBoardData()[i][j] == Main.SHIP_COMPONENT) {
                     board[i][j] = Main.SHIP_COMPONENT;
                 } else board[i][j] = Main.FOG;
                 //Placing a new ship horizontally
@@ -51,7 +51,19 @@ public class BoardProcessing {
                 }
             }
         }
-        resultingBoard.setBoardData(board);
+
+        ResultingBoard result = new ResultingBoard();
+        result.setBoardData(board);
+
+        player.setResultingBoard(result);
+
+
+//        if (player.getNumber().equals("1")) {
+//        } else if (player.getNumber().equals("2")){
+//            ResultingBoard boardOfPlayerTwo = new ResultingBoard();
+//            boardOfPlayerTwo.setBoardData(baseBoard);
+//            player.setResultingBoard(boardOfPlayerTwo);
+//        }
         copyBoard(board, baseBoard, baseBoardOutcome); // Copying the values of the "board" to a new array not
         // references
     }
@@ -119,29 +131,29 @@ public class BoardProcessing {
         baseBoardOutcome.setBoardData(baseBoard);
     }
 
-    public static void enterCoordinatesToPlaceAllShips(Scanner scanner, ResultingBoard resultingBoard,
+    public static void enterCoordinatesToPlaceAllShips(Scanner scanner,
                                                        ResultingBoard baseBoardOutcome,
                                                        char[][] board, char[][] baseBoard, int numberOfCells,
                                                        int checkIndexForThreeCells, Player player) {
         int[] coordinates;
-        new Player(player.getNumber());
+//        player.getNumber().equals("1") ? player1 = new Player(resultingBoard, player.getFoggedBoard())
+//        new Player(player.getNumber());
+        player.playerCommandToPlay();
         BoardProcessing.drawEmptyBoard();
         for (; numberOfCells >= 2; numberOfCells--) {
 
-            if (numberOfCells == 3 && ShipProcessing.getNumberOfPreviousShips(resultingBoard) == 9
-                    || ShipProcessing.getNumberOfPreviousShips(resultingBoard) == 12) {
+            if (numberOfCells == 3 && ShipProcessing.getNumberOfPreviousShips(player.getResultingBoard()) == 9
+                    || ShipProcessing.getNumberOfPreviousShips(player.getResultingBoard()) == 12) {
                 System.out.println("Enter the coordinates of the " + ShipProcessing.getShipType(numberOfCells,
-                        resultingBoard)
-                        + " (" + numberOfCells + " cells):");
+                        player.getResultingBoard()) + " (" + numberOfCells + " cells):");
                 checkIndexForThreeCells++;
             } else {
                 System.out.println("Enter the coordinates of the " + ShipProcessing.getShipType(numberOfCells,
-                        resultingBoard)
-                        + " (" + numberOfCells + " cells):");
+                        player.getResultingBoard()) + " (" + numberOfCells + " cells):");
             }
             coordinates = Coordinates.enterCoordinates(scanner);
 
-            while (!isShipValid(coordinates, numberOfCells, resultingBoard)) {
+            while (!isShipValid(coordinates, numberOfCells, player.getResultingBoard())) {
                 coordinates = Coordinates.enterCoordinates(scanner);
             }
 
@@ -150,11 +162,16 @@ public class BoardProcessing {
             and we want to get the value of three again */
             if (checkIndexForThreeCells == 1) numberOfCells = 4;
 
-            createBoard(coordinates, board, baseBoard, resultingBoard, baseBoardOutcome);
+            createBoard(coordinates, board, baseBoard, baseBoardOutcome, player);
 
-            drawBoard(resultingBoard);
+            drawBoard(player.getResultingBoard());
 
-            System.out.println("Press Enter and pass the move to another player");
         }
+        if (!player.getNumber().equals("2")) {
+            Scanner readKey = new Scanner(System.in);
+            System.out.println("Press Enter and pass the move to another player");
+            readKey.nextLine();
+        }
+
     }
 }

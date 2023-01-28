@@ -111,8 +111,7 @@ public class ValidityChecking {
     }
 
     public static boolean isSingleShipSunk(int[] coordinates, ResultingBoard resultingBoard,
-                                           ResultingBoard baseBoardOutcome) { //!THIS IS WHAT WE'RE WORKING ON AT THE
-        // MOMENT!
+                                           ResultingBoard baseBoardOutcome) {
 
         int[] shipProw = {0, 0};
         int[] shipStern = {0, 0};
