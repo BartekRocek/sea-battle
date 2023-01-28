@@ -35,17 +35,17 @@ public class Main {
         var checkIndexForThreeCells = 0;
 
         //Player ONE enters coordinates
-        ResultingBoard resultingBoard1 = new ResultingBoard();
-        FoggedBoard foggedBoardOutcome1 = new FoggedBoard();
-        Player playerOne = new Player(resultingBoard1, foggedBoardOutcome1);
+//        ResultingBoard resultingBoard1 = new ResultingBoard();
+//        FoggedBoard foggedBoardOutcome1 = new FoggedBoard();
+        Player playerOne = new Player(resultingBoard, foggedBoardOutcome);
         playerOne.setNumber("1");
         BoardProcessing.enterCoordinatesToPlaceAllShips(scanner, baseBoardOutcome, board, baseBoard,
                 numberOfCells, checkIndexForThreeCells, playerOne);
 
         //Player TWO enters coordinates
-        ResultingBoard resultingBoard2 = new ResultingBoard();
-        FoggedBoard foggedBoardOutcome2 = new FoggedBoard();
-        Player playerTwo = new Player(resultingBoard2, foggedBoardOutcome2);
+//        ResultingBoard resultingBoard2 = new ResultingBoard();
+//        FoggedBoard foggedBoardOutcome2 = new FoggedBoard();
+        Player playerTwo = new Player(resultingBoard, foggedBoardOutcome);
         playerTwo.setNumber("2");
         BoardProcessing.enterCoordinatesToPlaceAllShips(scanner, baseBoardOutcome, board, baseBoard,
                 numberOfCells, checkIndexForThreeCells, playerTwo);
